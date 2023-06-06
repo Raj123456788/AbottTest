@@ -37,7 +37,37 @@ namespace AbottTest
             WebDriver.Quit();
         }
 
-        public void SelectRegionTest()
+  
+        [Test]
+        public void LibViewLoginTest()
+        {
+            SelectRegionTest();
+            ValidateOutlookLoginTest();
+            RequestForAuthTest();
+            string code = GetAuthCode();
+            VerifyButtonExists(code);
+
+        }
+
+        [SetUp]
+        public void Setup()
+        {
+            WebDriver = GetChromeDriver();
+            WebDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(120);
+        }
+
+        private WebDriver GetChromeDriver()
+        {
+            var options = new ChromeOptions();
+
+            return new ChromeDriver(DriverPath, options, TimeSpan.FromSeconds(300));
+        }
+
+        /// <summary>
+        /// Test The region Page.
+        /// </summary>
+
+        private void SelectRegionTest()
         {
             // Navigate to login page
             WebDriver.Navigate().GoToUrl(BaseUrl);
@@ -85,7 +115,7 @@ namespace AbottTest
         /// <summary>
         /// Open Login Page & validate authentication.
         /// </summary>
-        public void ValidateOutlookLoginTest()
+        private void ValidateOutlookLoginTest()
         {
             // get the emailinput element.
             var emailInput = WebDriver.FindElement(By.Id("loginForm-email-input"));
@@ -132,7 +162,7 @@ namespace AbottTest
         /// <summary>
         /// Request the Auth Code.
         /// </summary>
-        public void RequestForAuthTest()
+        private void RequestForAuthTest()
         {
             var sendCodeButton = WebDriver.FindElement(By.Id("twoFactor-step1-next-button"));
             sendCodeButton.Click();
@@ -143,7 +173,7 @@ namespace AbottTest
         /// Gets The Auth Code for logging into the account.
         /// </summary>
         /// <returns></returns>
-        public string GetAuthCode()
+        private string GetAuthCode()
         {
             //open new window for outlook login
             WebDriver.SwitchTo().NewWindow(WindowType.Tab);
@@ -196,7 +226,7 @@ namespace AbottTest
         /// </summary>
         /// <param name="code"></param>
 
-        public void VerifyButtonExists(string code)
+        private void VerifyButtonExists(string code)
         {
             // Open a new window
             WebDriver.SwitchTo().Window(WebDriver.WindowHandles[0]);
@@ -214,29 +244,5 @@ namespace AbottTest
             Assert.AreEqual("Upload a Device", processupload.Text);
         }
 
-        [Test]
-        public void LibViewLoginTest()
-        {
-            SelectRegionTest();
-            ValidateOutlookLoginTest();
-            RequestForAuthTest();
-            string code = GetAuthCode();
-            VerifyButtonExists(code);
-
-        }
-
-        [SetUp]
-        public void Setup()
-        {
-            WebDriver = GetChromeDriver();
-            WebDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(120);
-        }
-
-        private WebDriver GetChromeDriver()
-        {
-            var options = new ChromeOptions();
-
-            return new ChromeDriver(DriverPath, options, TimeSpan.FromSeconds(300));
-        }
     }
 }
