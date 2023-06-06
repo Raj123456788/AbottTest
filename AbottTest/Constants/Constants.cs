@@ -8,6 +8,7 @@ namespace AbottTest.Constants
     {        
         public const string passwordLibView = "";
         public const string username = "";
-        public const string passwordOutlook = "";        
+        public const string passwordOutlook = "";
+        public const string driverPath = @"C:\Users\GIRIRAJ\Downloads\WebDriver\chromedriver_win32";
     }
 }
